@@ -1,5 +1,6 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
+import OutputItem from './OutputItem.vue'
 
 const props = defineProps(['newMessage'])
 
@@ -13,11 +14,18 @@ const msgList = ref([
 // 监听 newMessage 的变化
 watch(() => props.newMessage, (newVal) => {
   console.log("🚀 ~ watch ~ newVal:", newVal.message)
-  
+
   if (newVal.message) {
     msgList.value.push(newVal)
   }
 })
+
+// onMounted(() => {
+//   const eventSource = new EventSource('http://localhost:3000/stream');
+//   eventSource.onmessage = function (event) {
+//     console.log(event.data);
+//   };
+// })
 </script>
 
 <template>
@@ -28,7 +36,8 @@ watch(() => props.newMessage, (newVal) => {
         <div class="type-icon"></div>
         <div class="">
           <div class="send-user"></div>
-          <div class="message">{{ msg.message }}</div>
+          <!-- <div class="message">{{ msg.message }}</div> -->
+          <OutputItem :message="msg.message" />
         </div>
       </div>
     </div>
